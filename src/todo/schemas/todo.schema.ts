@@ -6,5 +6,5 @@ export const TodoSchema = new mongoose.Schema({
   isDone: Boolean,
   priority: Number,
   startDare: String,
-  endDate: Number,
+  endDate: String,
 });
