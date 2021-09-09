@@ -3,6 +3,6 @@ export class CreateTaskDTO {
     readonly description: string;
     readonly isDone: boolean;
     readonly priority: number;
-    readonly startDare: string;
+    readonly startDate: string;
     readonly endDate: string;
 }
