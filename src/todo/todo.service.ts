@@ -25,7 +25,21 @@ export class TodoService {
     return tasks;
   }
 
-  async editTask(taskID, createTaskDTO: CreateTaskDTO): Promise<Task> {
+  async getDoneTasks(): Promise<Task[]> {
+    const tasks = await this.taskModel.find().exec();
+    const doneTasks = tasks.filter(task => task.isDone === true);
+    return doneTasks;
+  }
+
+  async getSortTasks(): Promise<Task[]> {
+    const tasks = await this.taskModel.find().exec();
+    const sortTasks = tasks.sort( (a,b) => {
+      return (a === b)? 0 : a? -1 : 1;
+    });
+    return sortTasks;
+  }
+
+  async editTask(taskID: any, createTaskDTO: CreateTaskDTO): Promise<Task> {
     const editedTask = await this.taskModel
       .findByIdAndUpdate(taskID, createTaskDTO, { new: true });
     return editedTask;

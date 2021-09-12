@@ -1,4 +1,4 @@
-import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body, Put, Query, Delete, Patch } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTaskDTO } from './tdo/create-task.dto'; 
 import { ValidateObjectId } from './shared/pipes/validate-object-id.pipes';
@@ -34,14 +34,26 @@ export class TodoController {
     return res.status(HttpStatus.OK).json(tasks);
   }
 
+  @Get('done-tasks')
+  async getDoneTasks(@Res() res) {
+    const tasks = await this.todoService.getDoneTasks();
+    return res.status(HttpStatus.OK).json(tasks);
+  }
+
+  @Get('sort-tasks')
+  async getSortTasks(@Res() res) {
+    const tasks = await this.todoService.getSortTasks();
+    return res.status(HttpStatus.OK).json(tasks);
+  }
+
   // Edit a particular task using ID
   @Put('/edit')
   async editTask(
     @Res() res,
-    @Query('taskID', new ValidateObjectId()) taskID,
-    @Body() createTaskDTO: CreateTaskDTO,
+    @Query('taskId', new ValidateObjectId()) taskId,
+    @Body() createTaskDTO: CreateTaskDTO
   ) {
-    const editedTask = await this.todoService.editTask(taskID, createTaskDTO);
+    const editedTask = await this.todoService.editTask(taskId, createTaskDTO);
     if (!editedTask) {
         throw new NotFoundException('Task does not exist!');
     }
@@ -53,7 +65,10 @@ export class TodoController {
 
   // Delete a task using ID
   @Delete('/delete')
-  async deleteTask(@Res() res, @Query('taskID', new ValidateObjectId()) taskID) {
+  async deleteTask(
+    @Res() res, 
+    @Query('taskID', new ValidateObjectId()) taskID
+    ) {
     const deletedTask = await this.todoService.deleteTask(taskID);
     if (!deletedTask) {
         throw new NotFoundException('Task does not exist!');

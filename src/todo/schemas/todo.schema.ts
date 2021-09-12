@@ -4,7 +4,7 @@ export const TodoSchema = new mongoose.Schema({
   title: String,
   description: String,
   isDone: Boolean,
-  priority: Number,
+  priority: String,
   startDate: String,
   endDate: String,
 });
